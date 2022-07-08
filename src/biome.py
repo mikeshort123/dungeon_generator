@@ -15,7 +15,7 @@ class Biome:
 
         self.name = data["name"]
 
-        self.squares = data["squares"]
+        self.pixels = data["pixels"]
 
         self.tileList = {}
         for tile in data["tiles"]:
@@ -33,7 +33,7 @@ class Biome:
         visit = data["visit"]
 
         t_img = [
-            [self.squares[v] for v in row] for row in img
+            [self.pixels[v] for v in row] for row in img
         ]
 
         t = Tile(t_img,edge_rules,weight,walking_rules,visit)
