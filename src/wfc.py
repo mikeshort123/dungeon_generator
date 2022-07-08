@@ -4,7 +4,7 @@ from src.tile import Tile
 
 class WFC:
 
-    def __init__(self,W,SCL):
+    def __init__(self,W,SCL,biome):
 
         self.spawnx = 12
         self.spawny = 1
@@ -18,7 +18,7 @@ class WFC:
 
         for j in range(self.W):
             for i in range(self.W):
-                self.grid.append(Cell(i,j))
+                self.grid.append(Cell(i,j,biome=biome))
 
 
 
