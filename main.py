@@ -8,6 +8,9 @@ pygame.init()
 
 
 temple = Biome("res/temple.json")
+jungle = Biome("res/jungle.json")
+
+
 
 Biome.generateAllTileRules()
 
@@ -19,7 +22,7 @@ SCL = SCREEN_SIZE // W
 
 screen = pygame.display.set_mode([SCREEN_SIZE,SCREEN_SIZE])
 
-wfc = WFC(W,SCL,temple)
+wfc = WFC(W,SCL,temple,jungle)
 
 updateList = []
 for i in range(W): # add void border

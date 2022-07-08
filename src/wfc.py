@@ -4,7 +4,7 @@ from src.tile import Tile
 
 class WFC:
 
-    def __init__(self,W,SCL,biome):
+    def __init__(self,W,SCL,temple,jungle):
 
         self.spawnx = 12
         self.spawny = 1
@@ -17,8 +17,13 @@ class WFC:
         self.grid = []
 
         for j in range(self.W):
+            if j > self.W//2:
+                b = jungle
+            else:
+                b = temple
             for i in range(self.W):
-                self.grid.append(Cell(i,j,biome=biome))
+
+                self.grid.append(Cell(i,j,biome=b))
 
 
 
@@ -71,7 +76,7 @@ class WFC:
 
                 self.applyAllRules(next_grid,[new_cell])
 
-                if self.canWalkToSpawn(next_grid,new_cell,12,12):
+                if self.canWalkToSpawn(next_grid,new_cell,self.spawnx,self.spawny):
 
                     self.drawGrid(next_grid,screen)
 
@@ -164,33 +169,36 @@ class WFC:
 
             # UP
             if y > 0:
-                if cell.checkWalkingRules(0):
+                neighbour = grid[self.index(x,y-1)]
+                if cell.checkWalkingRules(0) and neighbour.checkWalkingRules(2):
 
-                    neighbour = grid[self.index(x,y-1)]
                     if neighbour not in searching:
                         searching.append(neighbour)
 
             # DOWN
             if y < self.W-1:
-                if cell.checkWalkingRules(2):
+                neighbour = grid[self.index(x,y+1)]
+                if cell.checkWalkingRules(2) and neighbour.checkWalkingRules(0):
 
-                    neighbour = grid[self.index(x,y+1)]
+
                     if neighbour not in searching:
                         searching.append(neighbour)
 
             # LEFT
             if x > 0:
-                if cell.checkWalkingRules(3):
+                neighbour = grid[self.index(x-1,y)]
+                if cell.checkWalkingRules(3) and neighbour.checkWalkingRules(1):
 
-                    neighbour = grid[self.index(x-1,y)]
+
                     if neighbour not in searching:
                         searching.append(neighbour)
 
             # RIGHT
             if x < self.W-1:
-                if cell.checkWalkingRules(1):
+                neighbour = grid[self.index(x+1,y)]
+                if cell.checkWalkingRules(1) and neighbour.checkWalkingRules(3):
 
-                    neighbour = grid[self.index(x+1,y)]
+
                     if neighbour not in searching:
                         searching.append(neighbour)
 
