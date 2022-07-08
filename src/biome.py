@@ -14,6 +14,9 @@ class Biome:
         f.close
 
         self.name = data["name"]
+
+        self.squares = data["squares"]
+
         self.tileList = {}
         for tile in data["tiles"]:
             self.loadTile(tile)
@@ -29,7 +32,11 @@ class Biome:
         walking_rules = data["walking_rules"]
         visit = data["visit"]
 
-        t = Tile(img,edge_rules,weight,walking_rules,visit)
+        t_img = [
+            [self.squares[v] for v in row] for row in img
+        ]
+
+        t = Tile(t_img,edge_rules,weight,walking_rules,visit)
 
         self.tileList[name] = t
 

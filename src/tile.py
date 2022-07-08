@@ -2,13 +2,6 @@ import pygame,random
 
 class Tile():
 
-    colours = [
-        (255,255,255), # path 0
-        (0,0,0), # void 1
-        (255,100,0), # walls 2
-        (0,0,255) # chest
-    ]
-
     def __init__(self, img, edge_rules,weight,walking_rules,visit):
 
         self.img = img
@@ -36,7 +29,7 @@ class Tile():
             for j in range(self.size):
                 ty = y + j*pw
 
-                c = Tile.colours[self.img[j][i]]
+                c = self.img[j][i]
 
                 pygame.draw.rect(screen,c,(tx,ty,pw,pw))
 
