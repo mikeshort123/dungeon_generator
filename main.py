@@ -18,7 +18,9 @@ def main():
 
     Biome.generateAllTileRules()
 
-    map = Map(W,[[jungle for j in range(W)] for i in range(W)])
+    distribution = [[jungle if j < W//2 else temple for j in range(W)] for i in range(W)]
+
+    map = Map(W,distribution)
 
     wfc = WFC(W,SCL)
 
