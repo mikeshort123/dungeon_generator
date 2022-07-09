@@ -36,8 +36,8 @@ class WFC:
             return None
 
         options = cell.options.copy()
-        random.shuffle(options)
-        for option in options: # try out each option (in a random order)
+        while option := self.getWeightedOption(options):
+
 
             next_map = map.copy()
 
@@ -53,6 +53,20 @@ class WFC:
                     return p_grid
 
         return None
+
+
+    def getWeightedOption(self,tiles): # used for pulling random items(weighted) from options of tiles
+        if len(tiles) == 0:
+            return False
+
+        weights = [tile.weight for tile in tiles]
+        cum_weights = [sum(weights[:i+1]) for i in range(len(weights))]
+
+        r = random.random() * cum_weights[-1]
+        f = filter(lambda w: w < r, cum_weights)
+        index = sum(1 for _ in f)
+
+        return tiles.pop(index)
 
 
     def applyAllRules(self,map):

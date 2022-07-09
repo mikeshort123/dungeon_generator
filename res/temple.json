@@ -51,7 +51,7 @@
       ],
       "edge_rules" : ["rrr","rrr","rrr","rrr"],
       "rotations" : 1,
-      "weight" : 1,
+      "weight" : 0.3,
       "walking_rules" : [true,true,true,true],
       "visit" : true
     },
@@ -115,7 +115,7 @@
       ],
       "edge_rules" : ["bpb","bpb","bpb","bpb"],
       "rotations" : 1,
-      "weight" : 1,
+      "weight" : 3,
       "walking_rules" : [true,true,true,true],
       "visit" : true
     },
@@ -179,7 +179,7 @@
       ],
       "edge_rules" : ["bbb","bbb","bpb","bbb"],
       "rotations" : 4,
-      "weight" : 1,
+      "weight" : 0.1,
       "walking_rules" : [false,false,true,false],
       "visit" : true
     }
