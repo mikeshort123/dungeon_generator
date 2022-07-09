@@ -41,9 +41,6 @@ class WFC:
         return self.grid
 
 
-
-
-
     def step(self,grid,screen):
 
         lowest = self.getLowestEntropy(grid)
@@ -51,49 +48,32 @@ class WFC:
         if len(lowest) == 0: # no more un-collapsed cells, grid is done, return true
             return grid
 
-        random.shuffle(lowest)
-        for cell in lowest: # work through list of low-entropy cells (in a random order)
+        cell = random.choice(lowest)
+        x, y = cell.x, cell.y
 
-            x = cell.x
-            y = cell.y
+        if len(cell.options) == 0: # if no available picks, backtrack
+            return None
 
-            if len(cell.options) == 0: # if no available picks, backtrack
-                return None
+        options = cell.options.copy()
+        random.shuffle(options)
+        for option in options: # try out each option (in a random order)
 
+            next_grid = grid.copy()
 
+            new_cell = Cell(x,y)
+            new_cell.collapse(option)
 
+            next_grid[self.index(x,y)] = new_cell
 
-            options = cell.options.copy()
-            random.shuffle(options)
-            for option in options: # try out each option (in a random order)
+            self.applyAllRules(next_grid,[new_cell])
 
-                next_grid = grid.copy()
+            if self.spawnWalk(next_grid,self.spawnx,self.spawny):
 
-                new_cell = Cell(x,y)
-                new_cell.collapse(option)
+                self.drawGrid(next_grid,screen)
 
-
-
-                next_grid[self.index(x,y)] = new_cell
-
-                self.applyAllRules(next_grid,[new_cell])
-
-                #walkCheck = True
-                #walkCheck = walkCheck and self.canWalkToSpawn(next_grid,new_cell,self.spawnx,self.spawny)
-
-                #walkCheck = walkCheck and self.canWalkToSpawn(next_grid,next_grid[self.index(x-1,y)],self.spawnx,self.spawny)
-                #walkCheck = walkCheck and self.canWalkToSpawn(next_grid,next_grid[self.index(x+1,y)],self.spawnx,self.spawny)
-                #walkCheck = walkCheck and self.canWalkToSpawn(next_grid,next_grid[self.index(x,y-1)],self.spawnx,self.spawny)
-                #walkCheck = walkCheck and self.canWalkToSpawn(next_grid,next_grid[self.index(x,y+1)],self.spawnx,self.spawny)
-
-                #if walkCheck:
-                if self.spawnWalk(next_grid,self.spawnx,self.spawny):
-
-                    self.drawGrid(next_grid,screen)
-
-                    p_grid = self.step(next_grid,screen)
-                    if p_grid:
-                        return p_grid
+                p_grid = self.step(next_grid,screen)
+                if p_grid:
+                    return p_grid
 
         return None
 
@@ -166,7 +146,7 @@ class WFC:
             # UP
             if y > 0:
                 neighbour = grid[self.index(x,y-1)]
-                if cell.checkWalkingRules(0) and neighbour.checkWalkingRules(2):
+                if cell.checkWalkingRules(0):
 
                     if neighbour not in reachable:
                         reachable.append(neighbour)
@@ -174,7 +154,7 @@ class WFC:
             # DOWN
             if y < self.W-1:
                 neighbour = grid[self.index(x,y+1)]
-                if cell.checkWalkingRules(2) and neighbour.checkWalkingRules(0):
+                if cell.checkWalkingRules(2):
 
 
                     if neighbour not in reachable:
@@ -183,7 +163,7 @@ class WFC:
             # LEFT
             if x > 0:
                 neighbour = grid[self.index(x-1,y)]
-                if cell.checkWalkingRules(3) and neighbour.checkWalkingRules(1):
+                if cell.checkWalkingRules(3):
 
 
                     if neighbour not in reachable:
@@ -192,7 +172,7 @@ class WFC:
             # RIGHT
             if x < self.W-1:
                 neighbour = grid[self.index(x+1,y)]
-                if cell.checkWalkingRules(1) and neighbour.checkWalkingRules(3):
+                if cell.checkWalkingRules(1):
 
 
                     if neighbour not in reachable:
@@ -207,69 +187,6 @@ class WFC:
             if cell not in reachable: return False
 
         return True
-
-
-
-
-    def canWalkToSpawn(self,grid,target,spawnx,spawny):
-
-
-        if target.isCollapsed():
-            if target.getFinalOption().visit == False: # if you dont need to get to spawn, its fine whatever
-                return True
-
-
-        searching = [target]
-
-        for cell in searching:
-
-            x,y = cell.x,cell.y
-
-
-            if x == spawnx and y == spawny:
-                return True
-
-            if cell.isCollapsed():
-                if cell.getFinalOption().visit == False:
-                    continue
-
-            # UP
-            if y > 0:
-                neighbour = grid[self.index(x,y-1)]
-                if cell.checkWalkingRules(0) and neighbour.checkWalkingRules(2):
-
-                    if neighbour not in searching:
-                        searching.append(neighbour)
-
-            # DOWN
-            if y < self.W-1:
-                neighbour = grid[self.index(x,y+1)]
-                if cell.checkWalkingRules(2) and neighbour.checkWalkingRules(0):
-
-
-                    if neighbour not in searching:
-                        searching.append(neighbour)
-
-            # LEFT
-            if x > 0:
-                neighbour = grid[self.index(x-1,y)]
-                if cell.checkWalkingRules(3) and neighbour.checkWalkingRules(1):
-
-
-                    if neighbour not in searching:
-                        searching.append(neighbour)
-
-            # RIGHT
-            if x < self.W-1:
-                neighbour = grid[self.index(x+1,y)]
-                if cell.checkWalkingRules(1) and neighbour.checkWalkingRules(3):
-
-
-                    if neighbour not in searching:
-                        searching.append(neighbour)
-
-        return False
-
 
 
     def drawGrid(self,grid,screen):
