@@ -1,5 +1,6 @@
 import json
 from src.tile import Tile
+from src.pixel import Pixel
 
 class Biome:
 
@@ -15,7 +16,7 @@ class Biome:
 
         self.name = data["name"]
 
-        self.pixels = data["pixels"]
+        self.pixels = Pixel.process(data["pixels"])
 
         self.tileList = {}
         for tile in data["tiles"]:

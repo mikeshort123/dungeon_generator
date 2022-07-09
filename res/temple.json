@@ -1,10 +1,10 @@
 {
   "name" : "temple",
   "pixels" : [
-    [194, 161, 54],
-    [26, 19, 8],
-    [102, 92, 64],
-    [71, 35, 110]
+    {"name" : "path", "colour" : [194, 161, 54]},
+    {"name" : "void", "colour" : [26, 19, 8]},
+    {"name" : "wall", "colour" : [102, 92, 64]},
+    {"name" : "chest", "colour" : [71, 35, 110]}
   ],
   "tiles" : [
 
