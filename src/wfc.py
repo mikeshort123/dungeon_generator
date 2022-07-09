@@ -37,7 +37,8 @@ class WFC:
 
     def go(self,screen):
 
-        self.step(self.grid,screen)
+        self.grid = self.step(self.grid,screen)
+        return self.grid
 
 
 
@@ -48,8 +49,7 @@ class WFC:
         lowest = self.getLowestEntropy(grid)
 
         if len(lowest) == 0: # no more un-collapsed cells, grid is done, return true
-            self.grid = grid
-            return True
+            return grid
 
         random.shuffle(lowest)
         for cell in lowest: # work through list of low-entropy cells (in a random order)
@@ -58,7 +58,7 @@ class WFC:
             y = cell.y
 
             if len(cell.options) == 0: # if no available picks, backtrack
-                return False
+                return None
 
 
 
@@ -91,10 +91,11 @@ class WFC:
 
                     self.drawGrid(next_grid,screen)
 
-                    if self.step(next_grid,screen):
-                        return True
+                    p_grid = self.step(next_grid,screen)
+                    if p_grid:
+                        return p_grid
 
-        return False
+        return None
 
 
     def applyAllRules(self,grid,applyStack):
