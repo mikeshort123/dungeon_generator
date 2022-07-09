@@ -1,10 +1,11 @@
 import pygame, random
 from src.cell import Cell
 from src.tile import Tile
+from src.map import Map
 
 class WFC:
 
-    def __init__(self,W,SCL,temple,jungle):
+    def __init__(self,W,SCL):
 
         self.spawnx = 12
         self.spawny = 1
@@ -12,41 +13,19 @@ class WFC:
         self.W = W
         self.SCL = SCL
 
-        self.finished = False
+    def forceCollapse(self,updateList,map,x,y,tile):
 
-        self.grid = []
-
-        for j in range(self.W):
-            if j > self.W//2:
-                b = jungle
-            else:
-                b = temple
-            for i in range(self.W):
-
-                self.grid.append(Cell(i,j,biome=b))
-
-
-
-
-    def forceCollapse(self,updateList,grid,x,y,tile):
-
-        cell = grid[self.index(x,y)]
+        cell = map.getCell(x,y)
         cell.collapse(tile)
         if cell not in updateList: updateList.append(cell)
 
 
-    def go(self,screen):
+    def step(self,map,screen):
 
-        self.grid = self.step(self.grid,screen)
-        return self.grid
-
-
-    def step(self,grid,screen):
-
-        lowest = self.getLowestEntropy(grid)
+        lowest = self.getLowestEntropy(map.grid)
 
         if len(lowest) == 0: # no more un-collapsed cells, grid is done, return true
-            return grid
+            return map
 
         cell = random.choice(lowest)
         x, y = cell.x, cell.y
@@ -58,29 +37,27 @@ class WFC:
         random.shuffle(options)
         for option in options: # try out each option (in a random order)
 
-            next_grid = grid.copy()
+            next_map = map.copy()
 
-            new_cell = Cell(x,y)
-            new_cell.collapse(option)
+            next_map.collapseCell(x,y,option)
+            self.applyAllRules(next_map)
 
-            next_grid[self.index(x,y)] = new_cell
+            if self.spawnWalk(next_map,self.spawnx,self.spawny):
 
-            self.applyAllRules(next_grid,[new_cell])
+                self.drawGrid(next_map.grid,screen)
 
-            if self.spawnWalk(next_grid,self.spawnx,self.spawny):
-
-                self.drawGrid(next_grid,screen)
-
-                p_grid = self.step(next_grid,screen)
+                p_grid = self.step(next_map,screen)
                 if p_grid:
                     return p_grid
 
         return None
 
 
-    def applyAllRules(self,grid,applyStack):
+    def applyAllRules(self,map):
 
-        for cell in applyStack:
+        while len(map.updateList) > 0:
+            cell = map.updateList.pop()
+        #for cell in map.updateList:
 
 
             x = cell.x
@@ -95,11 +72,10 @@ class WFC:
 
             for dir,dx,dy in dirList:
                 nx,ny = x+dx, y+dy
-                i = self.index(nx,ny)
 
-                if 0 <= i < self.W**2:
+                if 0 <= nx < self.W and 0 <= ny < self.W:
 
-                    neighbour = grid[i]
+                    neighbour = map.getCell(nx,ny)
                     if neighbour.isCollapsed() == False:
 
                         new_options, changed = self.getNewOptions(neighbour.options,cell.options,dir)
@@ -109,8 +85,8 @@ class WFC:
 
 
                             new_neighbour.options = new_options
-                            grid[i] = new_neighbour
-                            applyStack.append(new_neighbour)
+                            map.setCell(nx,ny,new_neighbour)
+                            map.updateList.append(new_neighbour)
 
 
 
@@ -134,9 +110,9 @@ class WFC:
         return res, changed
 
 
-    def spawnWalk(self,grid,spawnx,spawny):
+    def spawnWalk(self,map,spawnx,spawny):
 
-        spawnCell = grid[self.index(spawnx,spawny)]
+        spawnCell = map.getCell(spawnx,spawny)
 
         reachable = [spawnCell]
         for cell in reachable:
@@ -145,7 +121,7 @@ class WFC:
 
             # UP
             if y > 0:
-                neighbour = grid[self.index(x,y-1)]
+                neighbour = map.getCell(x,y-1)
                 if cell.checkWalkingRules(0):
 
                     if neighbour not in reachable:
@@ -153,7 +129,7 @@ class WFC:
 
             # DOWN
             if y < self.W-1:
-                neighbour = grid[self.index(x,y+1)]
+                neighbour = map.getCell(x,y+1)
                 if cell.checkWalkingRules(2):
 
 
@@ -162,7 +138,7 @@ class WFC:
 
             # LEFT
             if x > 0:
-                neighbour = grid[self.index(x-1,y)]
+                neighbour = map.getCell(x-1,y)
                 if cell.checkWalkingRules(3):
 
 
@@ -171,7 +147,7 @@ class WFC:
 
             # RIGHT
             if x < self.W-1:
-                neighbour = grid[self.index(x+1,y)]
+                neighbour = map.getCell(x+1,y)
                 if cell.checkWalkingRules(1):
 
 
@@ -179,7 +155,7 @@ class WFC:
                         reachable.append(neighbour)
 
 
-        for cell in grid:
+        for cell in map.grid:
 
             if cell.isCollapsed() and not cell.getFinalOption().visit:
                 continue
@@ -196,7 +172,7 @@ class WFC:
         for i in range(self.W):
             for j in range(self.W):
 
-                grid[self.index(i,j)].render(screen,i*self.SCL,j*self.SCL,self.SCL)
+                grid[i+self.W*j].render(screen,i*self.SCL,j*self.SCL,self.SCL)
 
         pygame.display.update()
 
@@ -213,9 +189,6 @@ class WFC:
 
         return list(lowest)
 
-
-    def index(self,x,y):
-        return x+self.W*y
 
     @staticmethod
     def intersection(a,b): # intersection of 2 lists

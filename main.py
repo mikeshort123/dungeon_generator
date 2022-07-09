@@ -1,69 +1,63 @@
 import pygame,json
 
-from src.tile import Tile
 from src.wfc import WFC
 from src.biome import Biome
+from src.map import Map
 
-pygame.init()
+def main():
 
+    pygame.init()
 
-temple = Biome("res/temple.json")
-jungle = Biome("res/jungle.json")
+    SCREEN_SIZE = 750
+    W = 25
+    SCL = SCREEN_SIZE // W
+    screen = pygame.display.set_mode([SCREEN_SIZE,SCREEN_SIZE])
 
+    temple = Biome("res/temple.json")
+    jungle = Biome("res/jungle.json")
 
+    Biome.generateAllTileRules()
 
-Biome.generateAllTileRules()
+    map = Map(W,[[jungle for j in range(W)] for i in range(W)])
 
+    wfc = WFC(W,SCL)
 
-SCREEN_SIZE = 750
-
-W = 25
-SCL = SCREEN_SIZE // W
-
-screen = pygame.display.set_mode([SCREEN_SIZE,SCREEN_SIZE])
-
-wfc = WFC(W,SCL,temple,jungle)
-
-updateList = []
-for i in range(W): # add void border
-    wfc.forceCollapse(updateList,wfc.grid,i,0,temple.tileList["blank"])
-    wfc.forceCollapse(updateList,wfc.grid,i,W-1,temple.tileList["blank"])
-    wfc.forceCollapse(updateList,wfc.grid,0,i,temple.tileList["blank"])
-    wfc.forceCollapse(updateList,wfc.grid,W-1,i,temple.tileList["blank"])
+    for i in range(W): # add void border
+        map.collapseCell(i,0,temple.tileList["blank"])
+        map.collapseCell(i,W-1,temple.tileList["blank"])
+        map.collapseCell(0,i,temple.tileList["blank"])
+        map.collapseCell(W-1,i,temple.tileList["blank"])
 
 
-img = [ # add spawn room
-    ["room_corner_3","room_wall_3","room_corner_4"],
-    ["room_door_2","room","room_door_4"],
-    ["room_corner_2","room_door","room_corner"]
-]
-x,y = wfc.spawnx-1,wfc.spawny-1
-for i in range(3):
-    for j in range(3):
-        wfc.forceCollapse(updateList,wfc.grid,x+i,y+j,temple.tileList[img[j][i]])
+    img = [ # add spawn room
+        ["room_corner_3","room_wall_3","room_corner_4"],
+        ["room_door_2","room","room_door_4"],
+        ["room_corner_2","room_door","room_corner"]
+    ]
+    x,y = wfc.spawnx-1,wfc.spawny-1
+    map.drawImage(img,temple,x,y)
 
-img = [ # add boss room
-    ["room_corner_3","room_door_3","room_wall_3","room_door_3","room_corner_4"],
-    ["room_door_2","room","room_chest","room","room_door_4"],
-    ["room_corner_2","room_wall","room_wall","room_wall","room_corner"]
-]
-x,y = wfc.spawnx-2,W-3
-for i in range(5):
-    for j in range(3):
-        wfc.forceCollapse(updateList,wfc.grid,x+i,y+j,temple.tileList[img[j][i]])
+    img = [ # add boss room
+        ["room_corner_3","room_door_3","room_wall_3","room_door_3","room_corner_4"],
+        ["room_door_2","room","room_chest","room","room_door_4"],
+        ["room_corner_2","room_wall","room_wall","room_wall","room_corner"]
+    ]
+    x,y = wfc.spawnx-2,W-3
+    map.drawImage(img,temple,x,y)
 
-wfc.applyAllRules(wfc.grid,updateList)
+    wfc.applyAllRules(map)
 
-wfc.go(screen)
-grid = wfc.grid
+    map = wfc.step(map,screen)
 
 
-running = True
-while running:
+    running = True
+    while running:
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
 
 
-pygame.quit()
+    pygame.quit()
+
+if __name__ == "__main__": main()

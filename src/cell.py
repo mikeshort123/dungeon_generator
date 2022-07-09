@@ -11,13 +11,12 @@ class Cell():
         self.y = y
 
         if biome:
-            self.options = biome.tileList.values()
+            self.options = list(biome.tileList.values())
         else:
             self.options = []
 
     def collapse(self,option):
         self.options = [option]
-        return self
 
     def isCollapsed(self):
         return len(self.options) == 1
