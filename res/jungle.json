@@ -54,25 +54,21 @@
       "visit" : true
     },
 
-
     {
-      "name" : "path_end",
+      "name" : "path_corner",
       "img" : [
         [1,1,1,1,1],
-        [1,0,0,0,1],
-        [1,0,0,0,1],
-        [1,0,0,0,1],
+        [1,0,0,0,0],
+        [1,0,0,0,0],
+        [1,0,0,0,0],
         [1,0,0,0,1]
       ],
-      "edge_rules" : ["bbb","bbb","bpb","bbb"],
+      "edge_rules" : ["bbb","bpb","bpb","bbb"],
       "rotations" : 4,
-      "weight" : 0.2,
-      "walking_rules" : [false,false,true,false],
+      "weight" : 1.2,
+      "walking_rules" : [false,true,true,false],
       "visit" : true
     }
-
-
-
 
 
   ]

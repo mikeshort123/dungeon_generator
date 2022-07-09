@@ -51,7 +51,7 @@
       ],
       "edge_rules" : ["rrr","rrr","rrr","rrr"],
       "rotations" : 1,
-      "weight" : 0.3,
+      "weight" : 0.2,
       "walking_rules" : [true,true,true,true],
       "visit" : true
     },
@@ -115,7 +115,7 @@
       ],
       "edge_rules" : ["bpb","bpb","bpb","bpb"],
       "rotations" : 1,
-      "weight" : 3,
+      "weight" : 2,
       "walking_rules" : [true,true,true,true],
       "visit" : true
     },
@@ -149,22 +149,6 @@
       "rotations" : 4,
       "weight" : 1,
       "walking_rules" : [false,true,false,true],
-      "visit" : true
-    },
-
-    {
-      "name" : "path_corner",
-      "img" : [
-        [1,1,1,1,1],
-        [1,0,0,0,0],
-        [1,0,0,0,0],
-        [1,0,0,0,0],
-        [1,0,0,0,1]
-      ],
-      "edge_rules" : ["bbb","bpb","bpb","bbb"],
-      "rotations" : 4,
-      "weight" : 1,
-      "walking_rules" : [false,true,true,false],
       "visit" : true
     },
 
