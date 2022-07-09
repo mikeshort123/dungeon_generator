@@ -5,13 +5,14 @@ from src.map import Map
 
 class WFC:
 
-    def __init__(self,W,SCL):
+    def __init__(self,W,spawnx,spawny,drawFunction):
 
-        self.spawnx = 12
-        self.spawny = 1
+        self.spawnx = spawnx
+        self.spawny = spawny
 
         self.W = W
-        self.SCL = SCL
+
+        self.drawFunction = drawFunction
 
     def forceCollapse(self,updateList,map,x,y,tile):
 
@@ -20,7 +21,7 @@ class WFC:
         if cell not in updateList: updateList.append(cell)
 
 
-    def step(self,map,screen):
+    def step(self,map):
 
         lowest = self.getLowestEntropy(map.grid)
 
@@ -44,9 +45,9 @@ class WFC:
 
             if self.spawnWalk(next_map,self.spawnx,self.spawny):
 
-                self.drawGrid(next_map.grid,screen)
+                self.drawFunction(next_map)
 
-                p_grid = self.step(next_map,screen)
+                p_grid = self.step(next_map)
                 if p_grid:
                     return p_grid
 
@@ -165,16 +166,7 @@ class WFC:
         return True
 
 
-    def drawGrid(self,grid,screen):
 
-        pygame.event.pump() # gotta clear the event list every now and then...
-
-        for i in range(self.W):
-            for j in range(self.W):
-
-                grid[i+self.W*j].render(screen,i*self.SCL,j*self.SCL,self.SCL)
-
-        pygame.display.update()
 
     def getLowestEntropy(self,grid): # get uncollapsed cells with lowest entropy
         s = sorted(grid, key=lambda c: len(c.options))
