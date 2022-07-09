@@ -16,7 +16,7 @@ class Biome:
 
         self.name = data["name"]
 
-        self.pixels = Pixel.process(data["pixels"])
+        self.pixels = Pixel.process(data["pixels"],self.name)
 
         self.tileList = {}
         for tile in data["tiles"]:

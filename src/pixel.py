@@ -7,8 +7,8 @@ class Pixel:
         self.colour = colour
 
     @staticmethod
-    def process(data):
+    def process(data,biome_name):
         pixels = []
         for p in data:
-            pixels.append(Pixel(p["name"],p["colour"]))
+            pixels.append(Pixel(biome_name+"."+p["name"],p["colour"]))
         return pixels
