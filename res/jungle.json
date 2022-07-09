@@ -2,7 +2,7 @@
   "name" : "jungle",
   "pixels" : [
     [8, 150, 12],
-    [73, 74, 73]
+    [8, 54, 1]
   ],
   "tiles" : [
 
@@ -17,7 +17,7 @@
       ],
       "edge_rules" : ["bbb","bbb","bbb","bbb"],
       "rotations" : 1,
-      "weight" : 1,
+      "weight" : 0.2,
       "walking_rules" : [false,false,false,false],
       "visit" : false
     },
@@ -49,7 +49,7 @@
       ],
       "edge_rules" : ["bbb","bpb","bbb","bpb"],
       "rotations" : 4,
-      "weight" : 1,
+      "weight" : 0.7,
       "walking_rules" : [false,true,false,true],
       "visit" : true
     },
@@ -66,7 +66,7 @@
       ],
       "edge_rules" : ["bbb","bbb","bpb","bbb"],
       "rotations" : 4,
-      "weight" : 1,
+      "weight" : 0.2,
       "walking_rules" : [false,false,true,false],
       "visit" : true
     }
