@@ -5,7 +5,14 @@ from src.map import Map
 
 class WFC:
 
-    def __init__(self,W,spawnx,spawny,drawFunction):
+    dirList = [ # directions and offsets, used for looping through different connections
+        ["UP",    0,-1],
+        ["RIGHT", 1, 0],
+        ["DOWN",  0, 1],
+        ["LEFT", -1, 0]
+    ]
+
+    def __init__(self,W,spawnx,spawny,drawFunction=None):
 
         self.spawnx = spawnx
         self.spawny = spawny
@@ -14,18 +21,12 @@ class WFC:
 
         self.drawFunction = drawFunction
 
-    def forceCollapse(self,updateList,map,x,y,tile):
-
-        cell = map.getCell(x,y)
-        cell.collapse(tile)
-        if cell not in updateList: updateList.append(cell)
-
 
     def step(self,map):
 
         lowest = self.getLowestEntropy(map.grid)
 
-        if len(lowest) == 0: # no more un-collapsed cells, grid is done, return true
+        if len(lowest) == 0: # no more un-collapsed cells, grid is done, return
             return map
 
         cell = random.choice(lowest)
@@ -43,9 +44,9 @@ class WFC:
             next_map.collapseCell(x,y,option)
             self.applyAllRules(next_map)
 
-            if self.spawnWalk(next_map,self.spawnx,self.spawny):
+            if self.spawnWalk(next_map):
 
-                self.drawFunction(next_map)
+                if self.drawFunction: self.drawFunction(next_map)
 
                 p_grid = self.step(next_map)
                 if p_grid:
@@ -58,38 +59,24 @@ class WFC:
 
         while len(map.updateList) > 0:
             cell = map.updateList.pop()
-        #for cell in map.updateList:
-
 
             x = cell.x
             y = cell.y
 
-            dirList = [
-                ["UP",    0,-1],
-                ["DOWN",  0, 1],
-                ["LEFT", -1, 0],
-                ["RIGHT", 1, 0]
-            ]
-
-            for dir,dx,dy in dirList:
+            for dir,dx,dy in WFC.dirList:
                 nx,ny = x+dx, y+dy
 
-                if 0 <= nx < self.W and 0 <= ny < self.W:
+                if not (0 <= nx < self.W and 0 <= ny < self.W): # if checking outside grid, skip to next direction
+                    continue
 
-                    neighbour = map.getCell(nx,ny)
-                    if neighbour.isCollapsed() == False:
+                neighbour = map.getCell(nx,ny)
+                if neighbour.isCollapsed(): # no point updating collapsed cells
+                    continue
 
-                        new_options, changed = self.getNewOptions(neighbour.options,cell.options,dir)
-                        if changed:
+                new_options, changed = self.getNewOptions(neighbour.options,cell.options,dir)
+                if changed:
 
-                            new_neighbour = Cell(nx,ny)
-
-
-                            new_neighbour.options = new_options
-                            map.setCell(nx,ny,new_neighbour)
-                            map.updateList.append(new_neighbour)
-
-
+                    map.updateCell(nx,ny,new_options)
 
 
     def getNewOptions(self, oldOptions, limitingCellOptions, direction):
@@ -111,47 +98,22 @@ class WFC:
         return res, changed
 
 
-    def spawnWalk(self,map,spawnx,spawny):
+    def spawnWalk(self,map):
 
-        spawnCell = map.getCell(spawnx,spawny)
+        spawnCell = map.getCell(self.spawnx,self.spawny)
 
         reachable = [spawnCell]
         for cell in reachable:
 
-            x,y = cell.x,cell.y
+            for d, [_, x, y] in enumerate(WFC.dirList):
 
-            # UP
-            if y > 0:
-                neighbour = map.getCell(x,y-1)
-                if cell.checkWalkingRules(0):
+                nx,ny = cell.x+x, cell.y+y
 
-                    if neighbour not in reachable:
-                        reachable.append(neighbour)
+                if not (0 <= nx < self.W and 0 <= ny < self.W): # if checking outside grid, skip to next direction
+                    continue
 
-            # DOWN
-            if y < self.W-1:
-                neighbour = map.getCell(x,y+1)
-                if cell.checkWalkingRules(2):
-
-
-                    if neighbour not in reachable:
-                        reachable.append(neighbour)
-
-            # LEFT
-            if x > 0:
-                neighbour = map.getCell(x-1,y)
-                if cell.checkWalkingRules(3):
-
-
-                    if neighbour not in reachable:
-                        reachable.append(neighbour)
-
-            # RIGHT
-            if x < self.W-1:
-                neighbour = map.getCell(x+1,y)
-                if cell.checkWalkingRules(1):
-
-
+                neighbour = map.getCell(nx,ny)
+                if cell.checkWalkingRules(d):
                     if neighbour not in reachable:
                         reachable.append(neighbour)
 

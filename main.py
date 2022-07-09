@@ -1,4 +1,4 @@
-import pygame,json
+import pygame,sys
 
 from src.wfc import WFC
 from src.biome import Biome
@@ -18,14 +18,14 @@ def main():
 
     Biome.generateAllTileRules()
 
-    distribution = [[jungle if j < W//2 else temple for j in range(W)] for i in range(W)]
+    startx,starty = W//2, 1 # start and end positions
+    endx,endy = W//2, W-2
+
+    distribution = [ # biome distribution, temple in certain radius from start and end, jungle elsewhere
+        [temple if distCheck(i,j,startx,starty,8) or distCheck(i,j,endx,endy,12) else jungle for j in range(W)] for i in range(W)
+    ]
 
     map = Map(W,distribution)
-
-    spawnx,spawny = W//2, 1
-
-    wfc = WFC(W,spawnx,spawny,getDrawFunction(screen,SCL))
-
 
     # add some preset stuff to the dungeon
 
@@ -41,40 +41,32 @@ def main():
         ["room_door_2","room","room_door_4"],
         ["room_corner_2","room_door","room_corner"]
     ]
-    x,y = spawnx-1,spawny-1
-    map.drawImage(img,temple,x,y)
+    map.drawImage(img,temple,startx-1,starty-1)
 
     img = [ # add boss room
         ["room_corner_3","room_door_3","room_wall_3","room_door_3","room_corner_4"],
         ["room_door_2","room","room_chest","room","room_door_4"],
         ["room_corner_2","room_wall","room_wall","room_wall","room_corner"]
     ]
-    x,y = spawnx-2,W-3
-    map.drawImage(img,temple,x,y)
+    map.drawImage(img,temple,endx-2,endy-1)
 
+
+    wfc = WFC(W, startx, starty, drawFunction = getDrawFunction(screen,SCL))
     wfc.applyAllRules(map)
 
     # run WFC algorithm
     map = wfc.step(map)
 
-
     # leave screen open until close button is pressed
-    running = True
-    while running:
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-
-
-    pygame.quit()
+    while True:
+        handlePygameExit()
 
 
 def getDrawFunction(screen,SCL): # generate a function for drawing the partially completed grid to the screen
 
     def drawGrid(map):
 
-        pygame.event.pump() # gotta clear the event list every now and then...
+        handlePygameExit()
 
         for cell in map.grid:
             x,y = cell.x,cell.y
@@ -83,6 +75,18 @@ def getDrawFunction(screen,SCL): # generate a function for drawing the partially
         pygame.display.update()
 
     return drawGrid
+
+
+def handlePygameExit():
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit(0)
+
+
+def distCheck(x,y,ax,ay,r): # function for generating biome distributions
+
+    return (x-ax) ** 2 + (y-ay) ** 2 < r ** 2
 
 
 if __name__ == "__main__": main()

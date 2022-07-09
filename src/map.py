@@ -17,10 +17,14 @@ class Map:
         self.updateList = []
 
 
-    def collapseCell(self,x,y,tile):
+    def collapseCell(self,x,y,tile): # collapse cell by setting its options to one tile
+        self.updateCell(x,y,[tile])
+
+
+    def updateCell(self,x,y,tiles):
         cell = Cell(x,y) # make a new cell rather than modifying old ones as to not change cells in previous steps stored for backtracking
         self.setCell(x,y,cell)
-        cell.collapse(tile)
+        cell.options = tiles
         self.updateList.append(cell)
 
 
