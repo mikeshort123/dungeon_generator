@@ -1,0 +1,79 @@
+{
+  "name" : "jungle",
+  "pixels" : [
+    [8, 150, 12],
+    [73, 74, 73]
+  ],
+  "tiles" : [
+
+    {
+      "name" : "blank",
+      "img" : [
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [1,1,1,1,1]
+      ],
+      "edge_rules" : ["bbb","bbb","bbb","bbb"],
+      "rotations" : 1,
+      "weight" : 1,
+      "walking_rules" : [false,false,false,false],
+      "visit" : false
+    },
+
+    {
+      "name" : "path_t-junction",
+      "img" : [
+        [1,1,1,1,1],
+        [0,0,0,0,0],
+        [0,0,0,0,0],
+        [0,0,0,0,0],
+        [1,0,0,0,1]
+      ],
+      "edge_rules" : ["bbb","bpb","bpb","bpb"],
+      "rotations" : 4,
+      "weight" : 1,
+      "walking_rules" : [false,true,true,true],
+      "visit" : true
+    },
+
+    {
+      "name" : "path_straight",
+      "img" : [
+        [1,1,1,1,1],
+        [0,0,0,0,0],
+        [0,0,0,0,0],
+        [0,0,0,0,0],
+        [1,1,1,1,1]
+      ],
+      "edge_rules" : ["bbb","bpb","bbb","bpb"],
+      "rotations" : 4,
+      "weight" : 1,
+      "walking_rules" : [false,true,false,true],
+      "visit" : true
+    },
+
+
+    {
+      "name" : "path_end",
+      "img" : [
+        [1,1,1,1,1],
+        [1,0,0,0,1],
+        [1,0,0,0,1],
+        [1,0,0,0,1],
+        [1,0,0,0,1]
+      ],
+      "edge_rules" : ["bbb","bbb","bpb","bbb"],
+      "rotations" : 4,
+      "weight" : 1,
+      "walking_rules" : [false,false,true,false],
+      "visit" : true
+    }
+
+
+
+
+
+  ]
+}

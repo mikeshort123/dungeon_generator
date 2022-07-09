@@ -5,16 +5,18 @@ from src.tile import Tile
 
 class Cell():
 
-    def __init__(self,x,y):
+    def __init__(self,x,y,biome=None):
 
         self.x = x
         self.y = y
 
-        self.options = Tile.tileList.values()
+        if biome:
+            self.options = list(biome.tileList.values())
+        else:
+            self.options = []
 
     def collapse(self,option):
         self.options = [option]
-        return self
 
     def isCollapsed(self):
         return len(self.options) == 1

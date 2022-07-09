@@ -1,70 +1,88 @@
 import pygame,json
 
-from src.tile import Tile
 from src.wfc import WFC
+from src.biome import Biome
+from src.map import Map
 
-pygame.init()
+def main():
 
+    pygame.init()
 
-f = open("res/tiles.json","r")
-data = json.load(f)
-f.close
+    SCREEN_SIZE = 750
+    W = 25
+    SCL = SCREEN_SIZE // W
+    screen = pygame.display.set_mode([SCREEN_SIZE,SCREEN_SIZE])
 
-for tile in data["tiles"]:
-    Tile.loadTile(tile)
+    temple = Biome("res/temple.json")
+    jungle = Biome("res/jungle.json")
 
-Tile.generateAllRules()
+    Biome.generateAllTileRules()
 
+    distribution = [[jungle if j < W//2 else temple for j in range(W)] for i in range(W)]
 
-SCREEN_SIZE = 750
+    map = Map(W,distribution)
 
-W = 25
-SCL = SCREEN_SIZE // W
+    spawnx,spawny = W//2, 1
 
-screen = pygame.display.set_mode([SCREEN_SIZE,SCREEN_SIZE])
-
-wfc = WFC(W,SCL)
-
-updateList = []
-for i in range(W): # add void border
-    wfc.forceCollapse(updateList,wfc.grid,i,0,Tile.tileList["blank"])
-    wfc.forceCollapse(updateList,wfc.grid,i,W-1,Tile.tileList["blank"])
-    wfc.forceCollapse(updateList,wfc.grid,0,i,Tile.tileList["blank"])
-    wfc.forceCollapse(updateList,wfc.grid,W-1,i,Tile.tileList["blank"])
+    wfc = WFC(W,spawnx,spawny,getDrawFunction(screen,SCL))
 
 
-img = [ # add spawn room
-    ["room_corner_3","room_wall_3","room_corner_4"],
-    ["room_door_2","room","room_door_4"],
-    ["room_corner_2","room_door","room_corner"]
-]
-x,y = wfc.spawnx-1,wfc.spawny-1
-for i in range(3):
-    for j in range(3):
-        wfc.forceCollapse(updateList,wfc.grid,x+i,y+j,Tile.tileList[img[j][i]])
+    # add some preset stuff to the dungeon
 
-img = [ # add boss room
-    ["room_corner_3","room_door_3","room_wall_3","room_door_3","room_corner_4"],
-    ["room_door_2","room","room_chest","room","room_door_4"],
-    ["room_corner_2","room_wall","room_wall","room_wall","room_corner"]
-]
-x,y = wfc.spawnx-2,W-3
-for i in range(5):
-    for j in range(3):
-        wfc.forceCollapse(updateList,wfc.grid,x+i,y+j,Tile.tileList[img[j][i]])
-
-wfc.applyAllRules(wfc.grid,updateList)
-
-wfc.go(screen)
-grid = wfc.grid
+    for i in range(W): # add void border
+        map.collapseCell(i,0,temple.tileList["blank"])
+        map.collapseCell(i,W-1,temple.tileList["blank"])
+        map.collapseCell(0,i,temple.tileList["blank"])
+        map.collapseCell(W-1,i,temple.tileList["blank"])
 
 
-running = True
-while running:
+    img = [ # add spawn room
+        ["room_corner_3","room_wall_3","room_corner_4"],
+        ["room_door_2","room","room_door_4"],
+        ["room_corner_2","room_door","room_corner"]
+    ]
+    x,y = spawnx-1,spawny-1
+    map.drawImage(img,temple,x,y)
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+    img = [ # add boss room
+        ["room_corner_3","room_door_3","room_wall_3","room_door_3","room_corner_4"],
+        ["room_door_2","room","room_chest","room","room_door_4"],
+        ["room_corner_2","room_wall","room_wall","room_wall","room_corner"]
+    ]
+    x,y = spawnx-2,W-3
+    map.drawImage(img,temple,x,y)
+
+    wfc.applyAllRules(map)
+
+    # run WFC algorithm
+    map = wfc.step(map)
 
 
-pygame.quit()
+    # leave screen open until close button is pressed
+    running = True
+    while running:
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+
+    pygame.quit()
+
+
+def getDrawFunction(screen,SCL): # generate a function for drawing the partially completed grid to the screen
+
+    def drawGrid(map):
+
+        pygame.event.pump() # gotta clear the event list every now and then...
+
+        for cell in map.grid:
+            x,y = cell.x,cell.y
+            cell.render(screen,x*SCL,y*SCL,SCL)
+
+        pygame.display.update()
+
+    return drawGrid
+
+
+if __name__ == "__main__": main()
