@@ -58,16 +58,9 @@ def main():
     # run WFC algorithm
     map = wfc.step(map)
 
-    encoder = {
-        "temple.path" : 0,
-        "temple.void" : 1,
-        "temple.wall" : 2,
-        "temple.chest": 3,
-        "jungle.shrub": 4,
-        "jungle.path" : 5
-    }
-    p = Processor(map,encoder)
 
+    p = Processor(map,"res/processing.json")
+    p.applyRules()
     p.save("temple.grid")
 
 

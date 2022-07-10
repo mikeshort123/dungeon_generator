@@ -1,0 +1,111 @@
+{
+  "encoder" : {
+    "temple.path" : 0,
+    "temple.void" : 1,
+    "temple.wall" : 2,
+    "temple.chest": 3,
+    "jungle.shrub": 4,
+    "jungle.path" : 5
+  },
+  "rules" : [
+    {
+      "target" : 6,
+      "match" : [
+        [null,0,null],
+        [null,1,null],
+        [null,null,null]
+      ]
+    },
+    {
+      "target" : 7,
+      "match" : [
+        [null,null,null],
+        [null,1,null],
+        [null,0,null]
+      ]
+    },
+    {
+      "target" : 8,
+      "match" : [
+        [null,null,null],
+        [null,1,0],
+        [null,null,null]
+      ]
+    },
+    {
+      "target" : 9,
+      "match" : [
+        [null,null,null],
+        [0,1,null],
+        [null,null,null]
+      ]
+    },
+    {
+      "target" : 10,
+      "match" : [
+        [null,null,null],
+        [null,1,0],
+        [null,0,0]
+      ]
+    },
+    {
+      "target" : 11,
+      "match" : [
+        [null,null,null],
+        [0,1,null],
+        [0,0,null]
+      ]
+    },
+    {
+      "target" : 12,
+      "match" : [
+        [null,0,0],
+        [null,1,0],
+        [null,null,null]
+      ]
+    },
+    {
+      "target" : 13,
+      "match" : [
+        [0,0,null],
+        [0,1,null],
+        [null,null,null]
+      ]
+    },
+    {
+      "target" : 14,
+      "match" : [
+        [null,null,null],
+        [null,1,1],
+        [null,1,0]
+      ]
+    },
+    {
+      "target" : 15,
+      "match" : [
+        [null,null,null],
+        [1,1,null],
+        [0,1,null]
+      ]
+    },
+    {
+      "target" : 16,
+      "match" : [
+        [null,1,0],
+        [null,1,1],
+        [null,null,null]
+      ]
+    },
+    {
+      "target" : 17,
+      "match" : [
+        [0,1,null],
+        [1,1,null],
+        [null,null,null]
+      ]
+    }
+
+  ]
+
+
+}
