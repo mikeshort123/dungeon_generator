@@ -14,8 +14,8 @@ def main():
     SCL = SCREEN_SIZE // W
     screen = pygame.display.set_mode([SCREEN_SIZE,SCREEN_SIZE])
 
-    temple = Biome("res/temple.json")
-    jungle = Biome("res/jungle.json")
+    temple = Biome("res/biomes/temple.json")
+    jungle = Biome("res/biomes/jungle.json")
 
     Biome.generateAllTileRules()
 
