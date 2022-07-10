@@ -1,8 +1,8 @@
 {
   "name" : "jungle",
   "pixels" : [
-    [8, 150, 12],
-    [8, 54, 1]
+    {"name" : "path", "colour" : [8, 150, 12]},
+    {"name" : "shrub", "colour" : [8, 54, 1]}
   ],
   "tiles" : [
 

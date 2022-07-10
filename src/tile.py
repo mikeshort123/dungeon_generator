@@ -29,7 +29,7 @@ class Tile():
             for j in range(self.size):
                 ty = y + j*pw
 
-                c = self.img[j][i]
+                c = self.img[j][i].colour
 
                 pygame.draw.rect(screen,c,(tx,ty,pw,pw))
 

@@ -3,6 +3,7 @@ import pygame,sys
 from src.wfc import WFC
 from src.biome import Biome
 from src.map import Map
+from src.processor import Processor
 
 def main():
 
@@ -13,8 +14,8 @@ def main():
     SCL = SCREEN_SIZE // W
     screen = pygame.display.set_mode([SCREEN_SIZE,SCREEN_SIZE])
 
-    temple = Biome("res/temple.json")
-    jungle = Biome("res/jungle.json")
+    temple = Biome("res/biomes/temple.json")
+    jungle = Biome("res/biomes/jungle.json")
 
     Biome.generateAllTileRules()
 
@@ -57,9 +58,19 @@ def main():
     # run WFC algorithm
     map = wfc.step(map)
 
+
+    p = Processor(map,"res/processing.json")
+    p.applyRules()
+    p.save("temple.grid")
+
+
+
     # leave screen open until close button is pressed
     while True:
         handlePygameExit()
+
+
+
 
 
 def getDrawFunction(screen,SCL): # generate a function for drawing the partially completed grid to the screen

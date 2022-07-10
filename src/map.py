@@ -43,7 +43,13 @@ class Map:
         return new_map
 
     def drawImage(self,img,biome,x,y):
-
         for j, row in enumerate(img):
             for i, v in enumerate(row):
                 self.collapseCell(x+i,y+j,biome.tileList[v])
+
+
+    def getPixelGrid(self):
+
+        img_size = self.grid[0].getFinalOption().size
+        pixel_grid = [[self.getCell(i//img_size,j//img_size).getFinalOption().img[j%img_size][i%img_size] for i in range(self.W*img_size)] for j in range(self.W*img_size)]
+        return pixel_grid
