@@ -3,6 +3,7 @@ import pygame,sys
 from src.wfc import WFC
 from src.biome import Biome
 from src.map import Map
+from src.processor import Processor
 
 def main():
 
@@ -13,8 +14,8 @@ def main():
     SCL = SCREEN_SIZE // W
     screen = pygame.display.set_mode([SCREEN_SIZE,SCREEN_SIZE])
 
-    temple = Biome("res/temple.json")
-    jungle = Biome("res/jungle.json")
+    temple = Biome("res/biomes/temple.json")
+    jungle = Biome("res/biomes/jungle.json")
 
     Biome.generateAllTileRules()
 
@@ -57,36 +58,19 @@ def main():
     # run WFC algorithm
     map = wfc.step(map)
 
-    pixel_grid = map.getPixelGrid()
-    coded_grid = [[encodePixel(v) for v in row] for row in pixel_grid]
 
-    s = "" # turn grid to string
-    for row in coded_grid:
-        for v in row:
-            s += str(v) + ","
-        s += "\n"
+    p = Processor(map,"res/processing.json")
+    p.applyRules()
+    p.save("temple.grid")
 
-    f = open("temple.grid","w+") # save grid to file
-    f.write(s)
-    f.close()
+
 
     # leave screen open until close button is pressed
     while True:
         handlePygameExit()
 
 
-def encodePixel(pixel):
 
-    l = {
-        "temple.path" : 0,
-        "temple.void" : 1,
-        "temple.wall" : 2,
-        "temple.chest": 3,
-        "jungle.shrub": 4,
-        "jungle.path" : 5
-    }
-
-    return l[pixel.name]
 
 
 def getDrawFunction(screen,SCL): # generate a function for drawing the partially completed grid to the screen
