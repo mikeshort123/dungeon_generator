@@ -1,0 +1,57 @@
+{
+  "width" : 25,
+  "height" : 25,
+  "blank_edge" : true,
+  "biomes" : [
+    "res/biomes/temple.json",
+    "res/biomes/jungle.json"
+  ],
+
+  "distribution": {
+    "default" : 1,
+    "modifiers": [
+      {
+        "type" : "circle",
+        "xpos" : 12,
+        "ypos" : 1,
+        "radius" : 7,
+        "result" : 0
+      },
+      {
+        "type" : "circle",
+        "xpos" : 12,
+        "ypos" : 23,
+        "radius" : 9,
+        "result" : 0
+      }
+    ]
+  },
+
+  "structures": [
+    {
+      "image" : [
+        ["room_corner_3","room_wall_3","room_corner_4"],
+        ["room_door_2","room","room_door_4"],
+        ["room_corner_2","room_door","room_corner"]
+      ],
+      "xpos" : 11,
+      "ypos" : 0,
+      "biome" : 0
+    },
+
+    {
+      "image" : [
+        ["room_corner_3","room_door_3","room_wall_3","room_door_3","room_corner_4"],
+        ["room_door_2","room","room_chest","room","room_door_4"],
+        ["room_corner_2","room_wall","room_wall","room_wall","room_corner"]
+      ],
+      "xpos" : 10,
+      "ypos" : 22,
+      "biome" : 0
+    }
+
+  ]
+
+
+
+}
