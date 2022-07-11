@@ -20,13 +20,3 @@ class Cell():
 
     def getFinalOption(self):
         return self.options[0]
-
-
-    def render(self,screen,x,y,size):
-
-        if self.isCollapsed():
-            self.getFinalOption().render(screen,x,y,size)
-
-        else:
-            c = 100
-            pygame.draw.rect(screen,(c,c,c),(x,y,size,size))

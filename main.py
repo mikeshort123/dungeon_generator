@@ -44,8 +44,23 @@ def getDrawFunction(screen,SCL): # generate a function for drawing the partially
         handlePygameExit()
 
         for cell in map.grid:
-            x,y = cell.x,cell.y
-            cell.render(screen,x*SCL,y*SCL,SCL)
+
+            x, y = cell.x*SCL, cell.y*SCL
+            if cell.isCollapsed():
+                tile = cell.getFinalOption()
+                pw = SCL // tile.size
+
+                for i in range(tile.size):
+                    tx = x + i*pw
+                    for j in range(tile.size):
+                        ty = y + j*pw
+
+                        c = tile.img[j][i].colour
+                        pygame.draw.rect(screen,c,(tx,ty,pw,pw))
+
+            else:
+                c = 100
+                pygame.draw.rect(screen,(c,c,c),(x,y,SCL,SCL))
 
         pygame.display.update()
 

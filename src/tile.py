@@ -22,19 +22,6 @@ class Tile():
         return Tile(name,new_img, new_edges, self.weight,new_walking,self.visit)
 
 
-    def render(self,screen,x,y,size): # draw the tile from img
-        pw = size // self.size
-
-        for i in range(self.size):
-            tx = x + i*pw
-            for j in range(self.size):
-                ty = y + j*pw
-
-                c = self.img[j][i].colour
-
-                pygame.draw.rect(screen,c,(tx,ty,pw,pw))
-
-
     def generateRules(self,tileList): # generate lists of tiles showing what tiles fit to this one
 
         self.allowed = {
