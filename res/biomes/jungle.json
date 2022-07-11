@@ -73,6 +73,70 @@
     },
 
     {
+      "name" : "room_centre",
+      "img" : [
+        [0,0,0,0,0],
+        [0,0,0,0,0],
+        [0,0,0,0,0],
+        [0,0,0,0,0],
+        [0,0,0,0,0]
+      ],
+      "edge_rules" : ["ena","are","are","are"],
+      "rotations" : 4,
+      "weight" : 0.2,
+      "walking_rules" : [true,true,true,true],
+      "visit" : true
+    },
+
+    {
+      "name" : "room_wall",
+      "img" : [
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [0,0,0,0,0],
+        [0,0,0,0,0],
+        [0,0,0,0,0]
+      ],
+      "edge_rules" : ["sss","sgg","era","ggs"],
+      "rotations" : 4,
+      "weight" : 0.2,
+      "walking_rules" : [false,true,true,true],
+      "visit" : true
+    },
+
+    {
+      "name" : "room_door",
+      "img" : [
+        [1,0,0,0,1],
+        [1,0,0,0,1],
+        [0,0,0,0,0],
+        [0,0,0,0,0],
+        [0,0,0,0,0]
+      ],
+      "edge_rules" : ["sgs","sgg","ane","ggs"],
+      "rotations" : 4,
+      "weight" : 0.2,
+      "walking_rules" : [true,true,true,true],
+      "visit" : true
+    },
+
+    {
+      "name" : "room_corner",
+      "img" : [
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [0,0,0,1,1],
+        [0,0,0,1,1],
+        [0,0,0,1,1]
+      ],
+      "edge_rules" : ["sss","sss","sgg","ggs"],
+      "rotations" : 4,
+      "weight" : 0.2,
+      "walking_rules" : [false,false,true,true],
+      "visit" : true
+    },
+
+    {
       "name" : "wall_straight",
       "img" : [
         [1,1,1,1,1],
