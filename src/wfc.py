@@ -12,10 +12,7 @@ class WFC:
         ["LEFT", -1, 0]
     ]
 
-    def __init__(self,spawnx,spawny,drawFunction=None):
-
-        self.spawnx = spawnx
-        self.spawny = spawny
+    def __init__(self,drawFunction=None):
 
         self.drawFunction = drawFunction
 
@@ -112,7 +109,7 @@ class WFC:
 
     def spawnWalk(self,map):
 
-        spawnCell = map.getCell(self.spawnx,self.spawny)
+        spawnCell = map.getCell(map.startx,map.starty)
 
         reachable = [spawnCell]
 

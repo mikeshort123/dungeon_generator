@@ -13,13 +13,10 @@ def main():
     SCL = SCREEN_SIZE // W
     screen = pygame.display.set_mode([SCREEN_SIZE,SCREEN_SIZE])
 
-    startx,starty = W//2, 1 # start and end positions
-    endx,endy = W//2, W-2
-
     map = Loader.loadWorld("res/world.json")
 
 
-    wfc = WFC(startx, starty, drawFunction = getDrawFunction(screen,SCL))
+    wfc = WFC(drawFunction = getDrawFunction(screen,SCL))
     wfc.applyAllRules(map)
 
     # run WFC algorithm

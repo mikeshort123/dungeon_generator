@@ -1,6 +1,10 @@
 {
   "width" : 25,
   "height" : 25,
+  "startx" : 12,
+  "starty" : 1,
+  "endx" : 12,
+  "endy" : 23,
   "blank_edge" : true,
   "biomes" : [
     "res/biomes/temple.json",

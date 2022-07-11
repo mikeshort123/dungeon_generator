@@ -15,6 +15,9 @@ class Loader:
         width = data["width"]
         height = data["height"]
 
+        startx,starty = data["startx"],data["starty"]
+        endx,endy = data["endx"],data["endy"]
+
         biomes = []
         for biomepath in data["biomes"]:
             biomes.append(Biome(biomepath))
@@ -25,7 +28,7 @@ class Loader:
         distribution = [[biomes[distribution_settings["default"]] for i in range(width)] for j in range(height)]
         Loader.applyDistributionModifiers(distribution,distribution_settings["modifiers"],biomes)
 
-        map = Map(width,distribution)
+        map = Map(width,startx,starty,endx,endy,distribution = distribution)
 
         for structure in data["structures"]:
             Loader.blitStructure(map,structure,biomes)
