@@ -2,9 +2,10 @@ from src.cell import Cell
 
 class Map:
 
-    def __init__(self,W,startx,starty,endx,endy,distribution=None):
+    def __init__(self,W,H,startx,starty,endx,endy,distribution=None):
 
         self.W = W
+        self.H = H
 
         self.startx = startx
         self.starty = starty
@@ -13,7 +14,7 @@ class Map:
 
         self.grid = []
         if distribution:
-            for j in range(self.W):
+            for j in range(self.H):
                 for i in range(self.W):
                     self.grid.append(Cell(i,j,biome=distribution[i][j]))
 
@@ -41,7 +42,7 @@ class Map:
         return x+self.W*y
 
     def copy(self):
-        new_map = Map(self.W,self.startx,self.starty,self.endx,self.endy)
+        new_map = Map(self.W,self.H,self.startx,self.starty,self.endx,self.endy)
         new_map.grid = self.grid[:]
         return new_map
 
@@ -54,5 +55,5 @@ class Map:
     def getPixelGrid(self):
 
         img_size = self.grid[0].getFinalOption().size
-        pixel_grid = [[self.getCell(i//img_size,j//img_size).getFinalOption().img[j%img_size][i%img_size] for i in range(self.W*img_size)] for j in range(self.W*img_size)]
+        pixel_grid = [[self.getCell(i//img_size,j//img_size).getFinalOption().img[j%img_size][i%img_size] for i in range(self.W*img_size)] for j in range(self.H*img_size)]
         return pixel_grid

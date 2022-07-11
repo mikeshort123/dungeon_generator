@@ -8,12 +8,12 @@ def main():
 
     pygame.init()
 
-    SCREEN_SIZE = 750
-    W = 25
-    SCL = SCREEN_SIZE // W
-    screen = pygame.display.set_mode([SCREEN_SIZE,SCREEN_SIZE])
-
     map = Loader.loadWorld("res/world.json")
+
+    SCL = 30
+    screen = pygame.display.set_mode([map.W * SCL, map.H * SCL])
+
+
 
 
     wfc = WFC(drawFunction = getDrawFunction(screen,SCL))

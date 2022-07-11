@@ -76,7 +76,7 @@ class WFC:
             for dir,dx,dy in WFC.dirList:
                 nx,ny = x+dx, y+dy
 
-                if not (0 <= nx < map.W and 0 <= ny < map.W): # if checking outside grid, skip to next direction
+                if not (0 <= nx < map.W and 0 <= ny < map.H): # if checking outside grid, skip to next direction
                     continue
                 neighbour = map.getCell(nx,ny)
                 if neighbour.isCollapsed(): # no point updating collapsed cells
@@ -120,7 +120,7 @@ class WFC:
             for dir,dx,dy in WFC.dirList:
                 nx,ny = x+dx, y+dy
 
-                if not (0 <= nx < map.W and 0 <= ny < map.W): # if checking outside grid, skip to next direction
+                if not (0 <= nx < map.W and 0 <= ny < map.H): # if checking outside grid, skip to next direction
                     continue
 
                 neighbour = map.getCell(nx,ny)
