@@ -66,6 +66,7 @@ class WFC:
         f = filter(lambda w: w < r, cum_weights)
         index = sum(1 for _ in f)
 
+
         return tiles.pop(index)
 
 
@@ -117,29 +118,39 @@ class WFC:
         spawnCell = map.getCell(self.spawnx,self.spawny)
 
         reachable = [spawnCell]
+
         for cell in reachable:
 
-            for d, [_, x, y] in enumerate(WFC.dirList):
+            x,y = cell.x,cell.y
 
-                nx,ny = cell.x+x, cell.y+y
+            for dir,dx,dy in WFC.dirList:
+                nx,ny = x+dx, y+dy
 
                 if not (0 <= nx < self.W and 0 <= ny < self.W): # if checking outside grid, skip to next direction
                     continue
 
                 neighbour = map.getCell(nx,ny)
-                if cell.checkWalkingRules(d):
+                if self.checkWalkable(neighbour,cell,dir):
                     if neighbour not in reachable:
                         reachable.append(neighbour)
 
 
         for cell in map.grid:
-
-            if cell.isCollapsed() and not cell.getFinalOption().visit:
-                continue
-
-            if cell not in reachable: return False
+            if True in [o.visit for o in cell.options]:
+                if cell not in reachable:
+                    return False
 
         return True
+
+
+    def checkWalkable(self,neighbour,cell,dir):
+
+        for option in cell.options:
+            for tile in option.walkable[dir]:
+                if tile in neighbour.options:
+                    return True
+
+        return False
 
 
 

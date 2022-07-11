@@ -2,7 +2,8 @@
   "name" : "jungle",
   "pixels" : [
     {"name" : "path", "colour" : [8, 150, 12]},
-    {"name" : "shrub", "colour" : [8, 54, 1]}
+    {"name" : "shrub", "colour" : [8, 54, 1]},
+    {"name" : "wall", "colour" : [102, 92, 64]}
   ],
   "tiles" : [
 
@@ -15,7 +16,7 @@
         [1,1,1,1,1],
         [1,1,1,1,1]
       ],
-      "edge_rules" : ["bbb","bbb","bbb","bbb"],
+      "edge_rules" : ["sss","sss","sss","sss"],
       "rotations" : 1,
       "weight" : 0.2,
       "walking_rules" : [false,false,false,false],
@@ -31,7 +32,7 @@
         [0,0,0,0,0],
         [1,0,0,0,1]
       ],
-      "edge_rules" : ["bbb","bpb","bpb","bpb"],
+      "edge_rules" : ["sss","sgs","sgs","sgs"],
       "rotations" : 4,
       "weight" : 1,
       "walking_rules" : [false,true,true,true],
@@ -47,7 +48,7 @@
         [0,0,0,0,0],
         [1,1,1,1,1]
       ],
-      "edge_rules" : ["bbb","bpb","bbb","bpb"],
+      "edge_rules" : ["sss","sgs","sss","sgs"],
       "rotations" : 4,
       "weight" : 0.7,
       "walking_rules" : [false,true,false,true],
@@ -63,11 +64,76 @@
         [1,0,0,0,0],
         [1,0,0,0,1]
       ],
-      "edge_rules" : ["bbb","bpb","bpb","bbb"],
+      "edge_rules" : ["sss","sgs","sgs","sss"],
       "rotations" : 4,
       "weight" : 1.2,
       "walking_rules" : [false,true,true,false],
       "visit" : true
+    },
+
+    {
+      "name" : "wall_straight",
+      "img" : [
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [2,2,2,2,2],
+        [2,2,2,2,2]
+
+      ],
+      "edge_rules" : ["sss","sso","cba","oss"],
+      "rotations" : 4,
+      "weight" : 1,
+      "walking_rules" : [false,false,false,false],
+      "visit" : false
+    },
+
+    {
+      "name" : "wall_door",
+      "img" : [
+        [1,0,0,0,1],
+        [1,0,0,0,1],
+        [1,0,0,0,1],
+        [2,0,0,0,2],
+        [2,0,0,0,2]
+      ],
+      "edge_rules" : ["sgs","sso","fed","oss"],
+      "rotations" : 4,
+      "weight" : 0.5,
+      "walking_rules" : [true,false,true,false],
+      "visit" : true
+    },
+
+    {
+      "name" : "wall_inner",
+      "img" : [
+        [2,2,2,2,2],
+        [2,2,2,2,2],
+        [1,1,1,2,2],
+        [1,1,1,2,2],
+        [1,1,1,2,2]
+      ],
+      "edge_rules" : ["cba","cba","oss","sso"],
+      "rotations" : 4,
+      "weight" : 1,
+      "walking_rules" : [false,false,false,false],
+      "visit" : false
+    },
+
+    {
+      "name" : "wall_outer",
+      "img" : [
+        [1,1,1,2,2],
+        [1,1,1,2,2],
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [1,1,1,1,1]
+      ],
+      "edge_rules" : ["sso","oss","sss","sss"],
+      "rotations" : 4,
+      "weight" : 0.01,
+      "walking_rules" : [false,false,false,false],
+      "visit" : false
     }
 
 

@@ -37,14 +37,14 @@ class Biome:
             [self.pixels[v] for v in row] for row in img
         ]
 
-        t = Tile(t_img,edge_rules,weight,walking_rules,visit)
+        t = Tile(self.name+"."+name,t_img,edge_rules,weight,walking_rules,visit)
 
         self.tileList[name] = t
 
         if rotations == 4: # some tiles need to be rotated
             for i in range(3):
                 new_name = name + "_" + str(i+2)
-                t = t.rotate()
+                t = t.rotate(self.name+"."+new_name)
                 self.tileList[new_name] = t
 
 

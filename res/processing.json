@@ -3,6 +3,7 @@
     "temple.path" : 0,
     "temple.void" : 1,
     "temple.wall" : 2,
+    "jungle.wall" : 2,
     "temple.chest": 3,
     "jungle.shrub": 4,
     "jungle.path" : 5

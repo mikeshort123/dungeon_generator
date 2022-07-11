@@ -19,22 +19,33 @@ def main():
 
     Biome.generateAllTileRules()
 
+
     startx,starty = W//2, 1 # start and end positions
     endx,endy = W//2, W-2
 
     distribution = [ # biome distribution, temple in certain radius from start and end, jungle elsewhere
-        [temple if distCheck(i,j,startx,starty,8) or distCheck(i,j,endx,endy,12) else jungle for j in range(W)] for i in range(W)
+        [temple if distCheck(i,j,startx,starty,7) or distCheck(i,j,endx,endy-1,9) else jungle for j in range(W)] for i in range(W)
     ]
 
     map = Map(W,distribution)
 
+
+
     # add some preset stuff to the dungeon
 
-    for i in range(W): # add void border
-        map.collapseCell(i,0,temple.tileList["blank"])
-        map.collapseCell(i,W-1,temple.tileList["blank"])
-        map.collapseCell(0,i,temple.tileList["blank"])
-        map.collapseCell(W-1,i,temple.tileList["blank"])
+    #left/right walls
+    map.drawImage([["blank"]] * W,jungle,0,0)
+    map.drawImage([["blank"]] * W,jungle,W-1,0)
+    #top wall
+    map.drawImage([["blank"] * 4 + ["wall_straight_4"]] ,jungle,1,0)
+    map.drawImage([["wall_straight_4"] + ["blank"] * 4],temple,6,0)
+    map.drawImage([["blank"] * 4 + ["wall_straight_2"]],temple,14,0)
+    map.drawImage([["wall_straight_2"] + ["blank"] * 4],jungle,19,0)
+    #bottom wall
+    map.drawImage([["blank"] * 2 + ["wall_straight_4"]] ,jungle,1,W-1)
+    map.drawImage([["wall_straight_4"] + ["blank"] * 5],temple,4,W-1)
+    map.drawImage([["blank"] * 5 + ["wall_straight_2"]],temple,15,W-1)
+    map.drawImage([["wall_straight_2"] + ["blank"] * 2],jungle,21,W-1)
 
 
     img = [ # add spawn room
@@ -50,6 +61,7 @@ def main():
         ["room_corner_2","room_wall","room_wall","room_wall","room_corner"]
     ]
     map.drawImage(img,temple,endx-2,endy-1)
+
 
 
     wfc = WFC(W, startx, starty, drawFunction = getDrawFunction(screen,SCL))

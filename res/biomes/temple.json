@@ -166,8 +166,71 @@
       "weight" : 0.1,
       "walking_rules" : [false,false,true,false],
       "visit" : true
-    }
+    },
 
+    {
+      "name" : "wall_straight",
+      "img" : [
+        [2,2,2,2,2],
+        [2,2,2,2,2],
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [1,1,1,1,1]
+      ],
+      "edge_rules" : ["abc","obb","bbb","bbo"],
+      "rotations" : 4,
+      "weight" : 1,
+      "walking_rules" : [false,false,false,false],
+      "visit" : false
+    },
+
+    {
+      "name" : "wall_door",
+      "img" : [
+        [2,0,0,0,2],
+        [2,0,0,0,2],
+        [1,0,0,0,1],
+        [1,0,0,0,1],
+        [1,0,0,0,1]
+      ],
+      "edge_rules" : ["def","obb","bpb","bbo"],
+      "rotations" : 4,
+      "weight" : 0.5,
+      "walking_rules" : [true,false,true,false],
+      "visit" : true
+    },
+
+    {
+      "name" : "wall_inner",
+      "img" : [
+        [2,2,2,2,2],
+        [2,2,2,2,2],
+        [1,1,1,2,2],
+        [1,1,1,2,2],
+        [1,1,1,2,2]
+      ],
+      "edge_rules" : ["abc","abc","obb","bbo"],
+      "rotations" : 4,
+      "weight" : 1,
+      "walking_rules" : [false,false,false,false],
+      "visit" : false
+    },
+
+    {
+      "name" : "wall_outer",
+      "img" : [
+        [1,1,1,2,2],
+        [1,1,1,2,2],
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [1,1,1,1,1]
+      ],
+      "edge_rules" : ["bbo","obb","bbb","bbb"],
+      "rotations" : 4,
+      "weight" : 0.01,
+      "walking_rules" : [false,false,false,false],
+      "visit" : false
+    }
 
 
 
