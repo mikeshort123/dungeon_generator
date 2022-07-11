@@ -12,7 +12,7 @@ class Biome:
 
         f = open(fn,"r") # load biome data from file
         data = json.load(f)
-        f.close
+        f.close()
 
         self.name = data["name"]
 
@@ -21,6 +21,10 @@ class Biome:
         self.tileList = {}
         for tile in data["tiles"]:
             self.loadTile(tile)
+
+        self.default = None
+        if data["default"]:
+            self.default = self.tileList[data["default"]]
 
 
     def loadTile(self,data): # load tile from json format
@@ -46,17 +50,3 @@ class Biome:
                 new_name = name + "_" + str(i+2)
                 t = t.rotate(self.name+"."+new_name)
                 self.tileList[new_name] = t
-
-
-    @staticmethod
-    def getAllTiles():
-        tiles = []
-        for biome in Biome.biomes:
-            tiles += biome.tileList.values()
-        return tiles
-
-    @staticmethod
-    def generateAllTileRules():
-        tiles = Biome.getAllTiles()
-        for t in tiles:
-            t.generateRules(tiles)

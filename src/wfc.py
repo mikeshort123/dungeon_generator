@@ -12,12 +12,7 @@ class WFC:
         ["LEFT", -1, 0]
     ]
 
-    def __init__(self,W,spawnx,spawny,drawFunction=None):
-
-        self.spawnx = spawnx
-        self.spawny = spawny
-
-        self.W = W
+    def __init__(self,drawFunction=None):
 
         self.drawFunction = drawFunction
 
@@ -81,9 +76,8 @@ class WFC:
             for dir,dx,dy in WFC.dirList:
                 nx,ny = x+dx, y+dy
 
-                if not (0 <= nx < self.W and 0 <= ny < self.W): # if checking outside grid, skip to next direction
+                if not (0 <= nx < map.W and 0 <= ny < map.W): # if checking outside grid, skip to next direction
                     continue
-
                 neighbour = map.getCell(nx,ny)
                 if neighbour.isCollapsed(): # no point updating collapsed cells
                     continue
@@ -115,7 +109,7 @@ class WFC:
 
     def spawnWalk(self,map):
 
-        spawnCell = map.getCell(self.spawnx,self.spawny)
+        spawnCell = map.getCell(map.startx,map.starty)
 
         reachable = [spawnCell]
 
@@ -126,7 +120,7 @@ class WFC:
             for dir,dx,dy in WFC.dirList:
                 nx,ny = x+dx, y+dy
 
-                if not (0 <= nx < self.W and 0 <= ny < self.W): # if checking outside grid, skip to next direction
+                if not (0 <= nx < map.W and 0 <= ny < map.W): # if checking outside grid, skip to next direction
                     continue
 
                 neighbour = map.getCell(nx,ny)

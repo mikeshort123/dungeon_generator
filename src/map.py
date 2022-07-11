@@ -2,17 +2,20 @@ from src.cell import Cell
 
 class Map:
 
-    def __init__(self,W,distribution=None):
+    def __init__(self,W,startx,starty,endx,endy,distribution=None):
 
         self.W = W
 
+        self.startx = startx
+        self.starty = starty
+        self.endx = endx
+        self.endy = endy
+
         self.grid = []
-        for j in range(self.W):
-            for i in range(self.W):
-                biome = None
-                if distribution:
-                    biome = distribution[i][j]
-                self.grid.append(Cell(i,j,biome=biome))
+        if distribution:
+            for j in range(self.W):
+                for i in range(self.W):
+                    self.grid.append(Cell(i,j,biome=distribution[i][j]))
 
         self.updateList = []
 
@@ -38,7 +41,7 @@ class Map:
         return x+self.W*y
 
     def copy(self):
-        new_map = Map(self.W)
+        new_map = Map(self.W,self.startx,self.starty,self.endx,self.endy)
         new_map.grid = self.grid[:]
         return new_map
 

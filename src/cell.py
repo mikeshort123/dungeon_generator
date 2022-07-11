@@ -15,20 +15,12 @@ class Cell():
         else:
             self.options = []
 
-    def collapse(self,option):
-        self.options = [option]
-
     def isCollapsed(self):
         return len(self.options) == 1
 
     def getFinalOption(self):
         return self.options[0]
 
-    def checkWalkingRules(self,i):
-        f = False
-        for option in self.options:
-            f = f or option.walking_rules[i]
-        return f
 
     def render(self,screen,x,y,size):
 
