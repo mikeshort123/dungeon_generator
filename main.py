@@ -11,7 +11,7 @@ def main():
     map = Loader.loadWorld("res/world.json")
 
     SCL = 30
-    screen = pygame.display.set_mode([map.W * SCL, map.W * SCL])
+    screen = pygame.display.set_mode([map.W * SCL, map.H * SCL])
 
 
 

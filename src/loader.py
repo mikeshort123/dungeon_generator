@@ -25,10 +25,10 @@ class Loader:
         Loader.generateAllTileRules(biomes)
 
         distribution_settings = data["distribution"]
-        distribution = [[biomes[distribution_settings["default"]] for i in range(width)] for j in range(height)]
+        distribution = [[biomes[distribution_settings["default"]] for j in range(height)] for i in range(width)]
         Loader.applyDistributionModifiers(distribution,distribution_settings["modifiers"],biomes)
 
-        map = Map(width,startx,starty,endx,endy,distribution = distribution)
+        map = Map(width,height,startx,starty,endx,endy,distribution = distribution)
 
         for structure in data["structures"]:
             Loader.blitStructure(map,structure,biomes)
@@ -43,9 +43,10 @@ class Loader:
     def drawBlankEdges(map,distribution,width,height):
         for i in range(width):
             Loader.drawBlankPiece(map,distribution,i,0)
-            Loader.drawBlankPiece(map,distribution,i,width-1)
-            Loader.drawBlankPiece(map,distribution,0,i)
-            Loader.drawBlankPiece(map,distribution,width-1,i)
+            Loader.drawBlankPiece(map,distribution,i,height-1)
+        for j in range(height):
+            Loader.drawBlankPiece(map,distribution,0,j)
+            Loader.drawBlankPiece(map,distribution,width-1,j)
 
 
     @staticmethod
@@ -71,8 +72,8 @@ class Loader:
 
     @staticmethod
     def applyCircle(distribution,result,x,y,r):
-        for j,row in enumerate(distribution):
-            for i in range(len(row)):
+        for i,row in enumerate(distribution):
+            for j in range(len(row)):
                 if (i-x)**2 + (j-y)**2 < r**2:
                     distribution[i][j] = result
 
