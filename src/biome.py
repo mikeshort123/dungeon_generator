@@ -50,17 +50,3 @@ class Biome:
                 new_name = name + "_" + str(i+2)
                 t = t.rotate(self.name+"."+new_name)
                 self.tileList[new_name] = t
-
-
-    @staticmethod
-    def getAllTiles():
-        tiles = []
-        for biome in Biome.biomes:
-            tiles += biome.tileList.values()
-        return tiles
-
-    @staticmethod
-    def generateAllTileRules():
-        tiles = Biome.getAllTiles()
-        for t in tiles:
-            t.generateRules(tiles)

@@ -31,13 +31,24 @@ class Loader:
             Loader.blitStructure(map,structure,biomes)
 
         if data["blank_edge"]:
-            for i in range(width):
-                if not map.getCell(i,0).isCollapsed(): map.collapseCell(i,0,distribution[i][0].default)
-                if not map.getCell(i,width-1).isCollapsed(): map.collapseCell(i,width-1,distribution[i][width-1].default)
-                if not map.getCell(0,i).isCollapsed(): map.collapseCell(0,i,distribution[0][i].default)
-                if not map.getCell(width-1,i).isCollapsed(): map.collapseCell(width-1,i,distribution[width-1][i].default)
+            Loader.drawBlankEdges(map,distribution,width,height)
 
         return map
+
+
+    @staticmethod
+    def drawBlankEdges(map,distribution,width,height):
+        for i in range(width):
+            Loader.drawBlankPiece(map,distribution,i,0)
+            Loader.drawBlankPiece(map,distribution,i,width-1)
+            Loader.drawBlankPiece(map,distribution,0,i)
+            Loader.drawBlankPiece(map,distribution,width-1,i)
+
+
+    @staticmethod
+    def drawBlankPiece(map,distribution,x,y):
+        if not map.getCell(x,y).isCollapsed():
+            map.collapseCell(x,y,distribution[x][y].default)
 
 
     @staticmethod

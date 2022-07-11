@@ -13,9 +13,6 @@ def main():
     SCL = SCREEN_SIZE // W
     screen = pygame.display.set_mode([SCREEN_SIZE,SCREEN_SIZE])
 
-
-
-
     startx,starty = W//2, 1 # start and end positions
     endx,endy = W//2, W-2
 
@@ -63,11 +60,6 @@ def handlePygameExit():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit(0)
-
-
-def distCheck(x,y,ax,ay,r): # function for generating biome distributions
-
-    return (x-ax) ** 2 + (y-ay) ** 2 < r ** 2
 
 
 if __name__ == "__main__": main()
