@@ -12,14 +12,10 @@ class WFC:
         ["LEFT", -1, 0]
     ]
 
-    def __init__(self,drawFunction=None):
+    @staticmethod
+    def step(map,drawFunction=None):
 
-        self.drawFunction = drawFunction
-
-
-    def step(self,map):
-
-        lowest = self.getLowestEntropy(map.grid)
+        lowest = WFC.getLowestEntropy(map.grid)
 
         if len(lowest) == 0: # no more un-collapsed cells, grid is done, return
             return map
@@ -31,26 +27,27 @@ class WFC:
             return None
 
         options = cell.options.copy()
-        while option := self.getWeightedOption(options):
+        while option := WFC.getWeightedOption(options):
 
 
             next_map = map.copy()
 
             next_map.collapseCell(x,y,option)
-            self.applyAllRules(next_map)
+            WFC.applyAllRules(next_map)
 
-            if self.spawnWalk(next_map):
+            if WFC.spawnWalk(next_map):
 
-                if self.drawFunction: self.drawFunction(next_map)
+                if drawFunction: drawFunction(next_map)
 
-                p_grid = self.step(next_map)
+                p_grid = WFC.step(next_map, drawFunction=drawFunction)
                 if p_grid:
                     return p_grid
 
         return None
 
 
-    def getWeightedOption(self,tiles): # used for pulling random items(weighted) from options of tiles
+    @staticmethod
+    def getWeightedOption(tiles): # used for pulling random items(weighted) from options of tiles
         if len(tiles) == 0:
             return False
 
@@ -65,7 +62,8 @@ class WFC:
         return tiles.pop(index)
 
 
-    def applyAllRules(self,map):
+    @staticmethod
+    def applyAllRules(map):
 
         while len(map.updateList) > 0:
             cell = map.updateList.pop()
@@ -82,13 +80,14 @@ class WFC:
                 if neighbour.isCollapsed(): # no point updating collapsed cells
                     continue
 
-                new_options, changed = self.getNewOptions(neighbour.options,cell.options,dir)
+                new_options, changed = WFC.getNewOptions(neighbour.options,cell.options,dir)
                 if changed:
 
                     map.updateCell(nx,ny,new_options)
 
 
-    def getNewOptions(self, oldOptions, limitingCellOptions, direction):
+    @staticmethod
+    def getNewOptions( oldOptions, limitingCellOptions, direction):
         # old options are the options this cell used to have
         # limitingCellOptions are the options of the cell that is applying the rules to this cell
         # direction is the direction from the limiting cell to this cell, to get what rules apply
@@ -107,7 +106,8 @@ class WFC:
         return res, changed
 
 
-    def spawnWalk(self,map):
+    @staticmethod
+    def spawnWalk(map):
 
         spawnCell = map.getCell(map.startx,map.starty)
 
@@ -124,7 +124,7 @@ class WFC:
                     continue
 
                 neighbour = map.getCell(nx,ny)
-                if self.checkWalkable(neighbour,cell,dir):
+                if WFC.checkWalkable(neighbour,cell,dir):
                     if neighbour not in reachable:
                         reachable.append(neighbour)
 
@@ -137,7 +137,8 @@ class WFC:
         return True
 
 
-    def checkWalkable(self,neighbour,cell,dir):
+    @staticmethod
+    def checkWalkable(neighbour,cell,dir):
 
         for option in cell.options:
             for tile in option.walkable[dir]:
@@ -147,9 +148,8 @@ class WFC:
         return False
 
 
-
-
-    def getLowestEntropy(self,grid): # get uncollapsed cells with lowest entropy
+    @staticmethod
+    def getLowestEntropy(grid): # get uncollapsed cells with lowest entropy
         s = sorted(grid, key=lambda c: len(c.options))
 
         uncollapsed = list(filter(lambda c: not c.isCollapsed(), s))

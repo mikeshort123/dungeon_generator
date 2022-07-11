@@ -14,13 +14,10 @@ def main():
     screen = pygame.display.set_mode([map.W * SCL, map.H * SCL])
 
 
-
-
-    wfc = WFC(drawFunction = getDrawFunction(screen,SCL))
-    wfc.applyAllRules(map)
+    WFC.applyAllRules(map)
 
     # run WFC algorithm
-    map = wfc.step(map)
+    map = WFC.step(map, drawFunction = getDrawFunction(screen,SCL))
 
 
     #p = Processor(map,"res/processing.json")
