@@ -14,7 +14,7 @@ class Processor:
                 for j,v in enumerate(row):
                     if v == None: continue
                     dx,dy = x+i-1, y+j-1
-                    if not (0 <= dx < len(grid) and 0 <= dy < len(grid)): return False
+                    if not (0 <= dx < len(grid) and 0 <= dy < len(grid[0])): return False
 
                     if grid[dx][dy] != v: return False
             return True
@@ -32,7 +32,7 @@ class Processor:
 
 
     def applyRules(self):
-        new_grid = [[self.applyRulesToPoint(i,j) for i in range(len(self.grid))] for j in range(len(self.grid))]
+        new_grid = [[self.applyRulesToPoint(i,j) for i in range(len(self.grid))] for j in range(len(self.grid[0]))]
         self.grid = new_grid
 
     def applyRulesToPoint(self,x,y):
