@@ -15,6 +15,11 @@ class WFC:
     @staticmethod
     def step(map,drawFunction=None):
 
+        WFC.applyAllRules(map)
+        if drawFunction: drawFunction(map)
+
+        if not WFC.spawnWalk(map): return None # if tiles aren't linked to spawn, its an invalid grid
+
         lowest = WFC.getLowestEntropy(map.grid)
 
         if len(lowest) == 0: # no more un-collapsed cells, grid is done, return
@@ -29,19 +34,12 @@ class WFC:
         options = cell.options.copy()
         while option := WFC.getWeightedOption(options):
 
-
             next_map = map.copy()
-
             next_map.collapseCell(x,y,option)
-            WFC.applyAllRules(next_map)
 
-            if WFC.spawnWalk(next_map):
-
-                if drawFunction: drawFunction(next_map)
-
-                p_grid = WFC.step(next_map, drawFunction=drawFunction)
-                if p_grid:
-                    return p_grid
+            p_map = WFC.step(next_map, drawFunction=drawFunction)
+            if p_map:
+                return p_map
 
         return None
 

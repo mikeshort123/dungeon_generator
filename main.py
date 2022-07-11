@@ -13,9 +13,6 @@ def main():
     SCL = 30
     screen = pygame.display.set_mode([map.W * SCL, map.H * SCL])
 
-
-    WFC.applyAllRules(map)
-
     # run WFC algorithm
     map = WFC.step(map, drawFunction = getDrawFunction(screen,SCL))
 
